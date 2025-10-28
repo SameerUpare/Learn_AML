@@ -1,11 +1,7 @@
 
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*.so
-
-# Virtual environments
+# Python venvs
 .venv/
+<<<<<<< HEAD
 env/
 venv/
 
@@ -37,3 +33,6 @@ Thumbs.db
 
 # legacy nested folder (remove if re-created)
 aml-lexisnexis-starter/
+=======
+aml-lexisnexis-starter/.venv/
+>>>>>>> 81a360c (chore: ignore local venvs (.venv) at root and nested)
