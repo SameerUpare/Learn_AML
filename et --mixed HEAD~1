@@ -1,0 +1,5 @@
+[33m4833fdb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/namescreening-v1[m[33m)[m Merge main into feature/namescreening-v1: consolidate structure, remove old inner folder, add name-screening modules
+[33m40f6d97[m[33m ([m[1;31morigin/main[m[33m)[m Scaffold repo and install dependencies
+[33m3eb8de6[m[33m ([m[1;31morigin/feat/scaffold[m[33m, [m[1;32mfeat/scaffold[m[33m)[m Scaffold repo and install dependencies (Fixes #1)
+[33m70f2dd1[m Delete aml-lexisnexis-starter.zip
+[33mc94258a[m[33m ([m[1;32mmain[m[33m, [m[1;32mfeat/xml-csv-ingest[m[33m)[m feat: phase-1 scaffold (lexisnexis + transactions anomaly)

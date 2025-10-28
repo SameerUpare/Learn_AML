@@ -1,67 +1,67 @@
+# AML Name Screening – Minimal Upgrade Path (Phase 1.5)
 
-# AML Learning Project — LexisNexis + Transaction Anomaly Detection (Phase 1)
+Production-lean, low-FPR **name screening** with hybrid retrieval (SQLite FTS5 + optional FAISS), classic text features (Levenshtein, Jaro–Winkler, token overlap), light context (DOB, country, ID tails), and optional multilingual embeddings.  
+**Transaction Monitoring is on hold** (see Roadmap).
 
-**Goal:** Learn ML/AI/NLP by building a realistic **AML anomaly detection** pipeline that links **LexisNexis (KYC/enrichment)** data with a **transaction dataset**, and flags unusual behavior with **explainable** outputs.
+## Repo layout
+src/
+aml/
+sanctions/
+preprocess.py
+normalize_sanctions.py
+load_kb.py
+features_text.py
+features_context.py
+features_embed.py
+screen.py
+screening/
+sqlite_vec.py
+scripts/
+add_context_indexes.py
+backfill_name_vectors_sqlite.py
+build_country_aliases.py
+build_faiss_index.py
+migrate_add_name_vec.py
 
-## 📦 Project Structure
-```
-.
-├── data/
-│   ├── raw/            # place source CSVs here (transactions.csv, lexisnexis.csv)
-│   ├── processed/      # clean, joined, feature-rich datasets
-│   └── external/       # any third-party lookups (country risk lists, MCC codes, etc.)
-├── docs/
-│   └── SETUP.md        # how to run the project
-├── notebooks/          # exploratory notebooks (01, 02, ...)
-├── src/aml/
-│   ├── config.py
-│   ├── data_ingest.py
-│   ├── feature_engineering.py
-│   ├── models/
-│   │   └── isolation_forest.py
-│   ├── evaluation.py
-│   ├── visualize.py
-│   └── utils.py
-├── tests/
-│   └── test_smoke.py
-├── README.md
-├── ROADMAP.md
-├── requirements.txt
-└── .gitignore
-```
+bash
+Copy code
 
-## 🧩 Phase 1 — What we will build
-1. **Data linking**: Join transactions with LexisNexis KYC/enrichment by customer/account ID.
-2. **Features**: velocity, peer-group deviation, geo/country, channel, counterparty risk, risk flags from LexisNexis.
-3. **Model**: Unsupervised baseline — Isolation Forest (configurable).
-4. **Explainability**: Top contributing features per flag (simple SHAP summary or rule contributions).
-5. **Outputs**: CSV of flagged transactions with scores, and a simple notebook dashboard.
-
-> **Note:** Use synthetic/sanitized data for learning. No real PII should be committed.
-
-## 📂 Expected Input Files (CSV)
-- `data/raw/transactions.csv`:  
-  `txn_id, customer_id, account_id, datetime, amount, currency, channel, counterparty_id, counterparty_country, mcc, description`
-- `data/raw/lexisnexis.csv`:  
-  `customer_id, customer_name, dob, nationality, pep_flag, sanctions_flag, adverse_media_score, risk_rating, kyc_last_review_date`
-
-(Columns are examples — adjust in `src/aml/config.py` if your dataset differs.)
-
-## ▶️ Quickstart
+## Quickstart
 ```bash
-python -m venv .venv
-source .venv/bin/activate  # on Windows: .venv\Scripts\activate
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-# Put your CSVs in data/raw/, then run a smoke test:
-python -c "from src.aml.data_ingest import validate_inputs; print(validate_inputs())"
-```
+# Normalize sources (place UK/UN raw files under data/external/sanctions/raw/)
+python -m aml.sanctions.normalize_sanctions --base data/external/sanctions
 
-## 🧪 First Notebook Plan
-- `notebooks/01_data_link_and_eda.ipynb`: join, sanity checks, basic EDA.
-- `notebooks/02_baseline_isolation_forest.ipynb`: train, score, export flagged csv.
-- `notebooks/03_explainability.ipynb`: SHAP (or simpler feature deltas), flag reasons.
-- `notebooks/04_reporting.ipynb`: top-10 customers/transactions, simple visuals.
+# Build/refresh SQLite KB with FTS5
+python -m aml.sanctions.load_kb --base data/external/sanctions
 
-## 🧭 Next Steps (Phase 1 → 1.5 → 2)
-See **ROADMAP.md** for milestones, issue bundles, and stretch goals (graph, NLP, case pages).
+# Smoke test
+python -c "from aml.sanctions.screen import screen; print(screen('Mohammad Ali', k=5))"
+How it works
+Candidate generation: SQLite FTS5 (aliases + normalized). Optional FAISS ANN if vectors exist.
+
+Text features: Levenshtein / Jaro–Winkler / token overlap (see features_text.py).
+
+Context features: DOB, country aliases, soft ID-tail (see features_context.py).
+
+Embeddings (optional): sentence-transformers → cosine sim (see features_embed.py).
+
+Decision: thresholds in screen.py via NameMatchConfig.
+
+Config / Env
+AML_EMB_MODEL – HF model id for embeddings (default: multilingual MiniLM).
+
+AML_COUNTRY_ALIASES – optional JSON to extend country mappings.
+
+SANCTIONS_DATA_DIR – override base path for raw/normalized data (CLI --base typically used instead).
+
+Large files
+entities.csv is tracked with Git LFS. After cloning:
+
+bash
+Copy code
+git lfs install && git lfs pull
+Roadmap
+See ROADMAP.md for next steps (namescreening items) and parked Transaction Monitoring.

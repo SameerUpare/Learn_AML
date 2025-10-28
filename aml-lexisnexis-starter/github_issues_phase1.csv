@@ -1,0 +1,13 @@
+Title,Body,Labels,Milestone
+Scaffold repo and install dependencies,"Create folders, add requirements.txt, and verify virtualenv + smoke test runs.","M1,setup",M1
+Define data contracts for transactions and lexisnexis CSVs,Document required columns and formats in README and config.py.,"M1,data",M1
+Implement join logic (transactions ⨯ lexisnexis),Write `join_txn_lexisnexis` with left join on customer_id; add unit tests.,"M1,ingest",M1
+Feature engineering v1,"Add velocity, temporal, and simple risk-flag features; handle missing values.","M1,features",M1
+Isolation Forest baseline,"Train, score, and export flagged transactions; make contamination configurable.","M1,model",M1
+Score distribution chart,Add a histogram plot function and save as PNG in reports/.,"M1,viz",M1
+Notebook 01: data link + EDA,"Show joins, sanity checks, missingness, and basic stats.","M1,notebooks",M1
+Notebook 02: baseline isolation forest,"Train, score, and export flagged CSV + quick visuals.","M1,notebooks",M1
+Notebook 03: explainability draft,Add SHAP (optional) or simple contribution breakdown; capture top drivers per flag.,"M1.5,explainability",M1.5
+Notebook 04: reporting,Create a concise summary (top customers/txns) and optionally export PDF.,"M1.5,reporting",M1.5
+Peer-group logic and calibration,Add segmentation by country/MCC/channel and tune thresholds.,"M2,features,calibration",M2
+Stretch: simple graph features,Add counterparty graph and compute degree/shortest path to risky nodes.,"M3,graph,stretch",M3

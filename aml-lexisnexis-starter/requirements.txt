@@ -1,10 +1,21 @@
+# -------- Core runtime --------
+numpy>=1.26
+Unidecode>=1.3
 
-pandas
-numpy
-scikit-learn
-matplotlib
-jupyter
-pyyaml
-shap
-plotly
-lxml
+# If you produce CSV reports or notebooks later:
+# pandas>=2.2
+
+# Optional HTTP/API (for exposing FastAPI endpoint)
+# fastapi>=0.115
+# uvicorn[standard]>=0.30
+
+# -------- Embeddings (optional) --------
+# sentence-transformers>=3.0
+# torch>=2.3            # choose CPU/GPU build for your platform
+
+# -------- ANN (optional) --------
+# faiss-cpu>=1.8.0.post4
+
+# -------- Dev/tooling (optional) --------
+# pytest>=8.2
+# ruff>=0.6

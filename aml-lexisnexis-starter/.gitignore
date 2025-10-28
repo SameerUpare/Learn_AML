@@ -23,3 +23,17 @@ reports/
 # OS files
 .DS_Store
 Thumbs.db
+<<<<<<< HEAD
+
+# Large/binary artifacts
+*.zip
+*.7z
+*.tar
+*.tar.gz
+
+*.zip
+=======
+>>>>>>> origin/main
+
+# legacy nested folder (remove if re-created)
+aml-lexisnexis-starter/

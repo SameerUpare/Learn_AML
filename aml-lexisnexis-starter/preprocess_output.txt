@@ -1,0 +1,12 @@
+IN  : Jos?  ​  Garc?a
+NFKC: Jos?    Garc?a
+MATCH: jos? garc?a
+----------------------------------------
+IN  : ?????Abdul?Haq
+NFKC: ?????Abdul?Haq
+MATCH: ?????abdul?haq
+----------------------------------------
+IN  : H?Q	(Al-Haqq)
+NFKC: H?Q	(Al-Haqq)
+MATCH: h?q al haqq
+----------------------------------------
