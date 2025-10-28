@@ -1,33 +1,4 @@
 
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*.so
-
-# Virtual environments
+# Python venvs
 .venv/
-env/
-venv/
-
-# Data & artifacts
-data/*
-!data/raw/.gitkeep
-!data/processed/.gitkeep
-!data/external/.gitkeep
-artifacts/
-reports/
-
-# Jupyter
-.ipynb_checkpoints/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Large/binary artifacts
-*.zip
-*.7z
-*.tar
-*.tar.gz
-
-*.zip
+aml-lexisnexis-starter/.venv/
