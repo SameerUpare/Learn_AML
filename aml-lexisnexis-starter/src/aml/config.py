@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 @dataclass
@@ -24,5 +23,17 @@ class Columns:
     risk_rating: str = "risk_rating"
     kyc_last_review_date: str = "kyc_last_review_date"
 
+@dataclass
+class XMLPaths:
+    """
+    Configure how to extract rows from XML.
+    Change these to match your XML structure.
+    Examples:
+      - ISO 20022-style transactions: ".//Tx"
+      - Simple KYC records: ".//customer"
+    """
+    transactions_xpath: str = ".//transaction"
+    lexisnexis_xpath: str = ".//customer"
 
 C = Columns()
+X = XMLPaths()

@@ -23,3 +23,11 @@ reports/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Large/binary artifacts
+*.zip
+*.7z
+*.tar
+*.tar.gz
+
+*.zip
