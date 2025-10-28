@@ -11,6 +11,7 @@ FEATURES = [
 
 def train_and_score(df: pd.DataFrame, random_state: int = 42):
     df_fe = add_basic_features(df)
+<<<<<<< HEAD
     # Select numeric features safely and reduce memory footprint
     use_cols = [c for c in FEATURES if c in df_fe.columns]
     X = (
@@ -26,3 +27,15 @@ def train_and_score(df: pd.DataFrame, random_state: int = 42):
     df_fe.loc[:, "anomaly_score"] = pd.Series(scores, index=df_fe.index, dtype="float32")
     # Return unsorted to avoid expensive global sort on very large datasets; downstream will pick top-k efficiently
     return df_fe, {"features_used": use_cols}
+=======
+    # select numeric features safely
+    use_cols = [c for c in FEATURES if c in df_fe.columns]
+    X = df_fe[use_cols].select_dtypes(include="number").fillna(0.0)
+    iso = IsolationForest(n_estimators=200, contamination="auto", random_state=random_state)
+    iso.fit(X)
+    scores = -iso.score_samples(X)  # higher = more anomalous
+    out = df_fe.copy()
+    out["anomaly_score"] = scores
+    # Return unsorted to avoid expensive global sort on very large datasets; downstream will pick top-k efficiently
+    return out, {"features_used": use_cols}
+>>>>>>> origin/main

@@ -6,14 +6,18 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 # -------------------------------------------------------------
 
+<<<<<<< HEAD
 import os
 import argparse
+=======
+>>>>>>> origin/main
 import pandas as pd
 pd.set_option("display.width", 160)
 pd.set_option("display.max_columns", 30)
 
 from src.aml.data_ingest import load_transactions, load_lexisnexis, join_txn_lexisnexis
 from src.aml.models.isolation_forest import train_and_score
+<<<<<<< HEAD
 parser = argparse.ArgumentParser()
 parser.add_argument("--max_rows", type=int, default=None)
 args = parser.parse_args()
@@ -33,6 +37,18 @@ joined = txn  # default: score transactions alone
 # 2) Train + score
 scored, meta = train_and_score(joined)
 print("FEATURES USED:", meta.get("features_used"))
+=======
+from src.aml.evaluation import top_flags
+
+# 1) Load + join (use your sample files or swap to big ones later)
+txn = load_transactions('data/raw/transactions1.csv')
+ln  = load_lexisnexis('data/raw/lexisnexis1.xml')
+joined = join_txn_lexisnexis(txn, ln)
+
+# 2) Score
+scored, meta = train_and_score(joined)
+print("FEATURES USED:", meta["features_used"])
+>>>>>>> origin/main
 
 # 3) Pick & format columns for view
 cols = [
@@ -51,6 +67,7 @@ if "anomaly_score" in view.columns:
     view["anomaly_score"] = view["anomaly_score"].round(6)
 
 # sort & preview
+<<<<<<< HEAD
 if "anomaly_score" in view.columns:
     view = view.sort_values("anomaly_score", ascending=False)
 top10 = view.head(10)
@@ -59,6 +76,14 @@ print(top10.to_string(index=False))
 # ensure output dirs
 os.makedirs("data/processed", exist_ok=True)
 os.makedirs("reports", exist_ok=True)
+=======
+view = view.sort_values("anomaly_score", ascending=False)
+top10 = view.head(10)
+print(top10.to_string(index=False))
+
+# ensure output dir
+os.makedirs("data/processed", exist_ok=True)
+>>>>>>> origin/main
 top10.to_csv("data/processed/flagged_top10.csv", index=False)
 view.to_csv("data/processed/flagged_all_scored.csv", index=False)
 print("\nSaved: data/processed/flagged_top10.csv and data/processed/flagged_all_scored.csv")
@@ -77,6 +102,7 @@ if "anomaly_score" in view.columns:
 # (3) HISTOGRAM PNG (anomaly score dist.)
 # -----------------------------------------
 import matplotlib
+<<<<<<< HEAD
 # In headless environments (e.g., CI), use a non-GUI backend:
 # matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -89,3 +115,16 @@ if "anomaly_score" in view.columns:
     plt.tight_layout()
     plt.savefig("reports/anomaly_hist.png", dpi=150)
     print("Saved: reports/anomaly_hist.png")
+=======
+# In headless environments, ensure a non-GUI backend:
+# matplotlib.use("Agg")  # uncomment if you run this on a server/CI
+import matplotlib.pyplot as plt
+
+plt.figure()
+view["anomaly_score"].hist(bins=30)
+plt.title("Anomaly Score Distribution")
+plt.xlabel("anomaly_score"); plt.ylabel("count")
+plt.tight_layout()
+plt.savefig("data/processed/anomaly_hist.png", dpi=150)
+print("Saved: data/processed/anomaly_hist.png")
+>>>>>>> origin/main
