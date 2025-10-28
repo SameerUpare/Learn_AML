@@ -1,45 +1,47 @@
+# Roadmap — Name Screening (Phase 1.5)
 
-# ROADMAP
+## ✅ Current Status
+- Core pipeline: normalization → KB → screen()
+- ISO20022 preprocessing audit working
+- Git hygiene: large archives removed; entities.csv via Git LFS
+- Transaction Monitoring: **on hold**
 
-## Milestones
-### M1 — Baseline pipeline (3–5 days)
-- ✅ Repo scaffold & setup
-- ✅ Data schema & config
-- ✅ Join (transactions ⨯ lexisnexis)
-- ✅ Isolation Forest baseline
-- ✅ Export flagged transactions + simple charts
+---
 
-### M1.5 — Explainability & Reporting (2–3 days)
-- SHAP (or simple contribution breakdown)
-- Top drivers per flag (per transaction & per customer)
-- Notebook to CSV/PDF summary
+## ��� Next 10 Name Screening Enhancements
+1. **Normalization hardening**
+   - ICU transliteration; zero-width / fancy whitespace handling.
+   - Golden tests for mixed-script names.
+2. **Alias expansion coverage**
+   - Measure per-entity alias completeness; CI threshold <80% flagged.
+3. **Text feature calibration**
+   - Tune Levenshtein, Jaro–Winkler, token overlap weights; record Precision@k, FPR.
+4. **Context feature weighting**
+   - DOB, country canonicalization, ID-tail; YAML-driven weights.
+5. **Embeddings (optional)**
+   - Add multilingual model via `AML_EMB_MODEL`; measure latency/recall vs FTS5.
+6. **FAISS recall path (optional)**
+   - Build index + top-k recall tests; ensure integrity at load.
+7. **Decision thresholds**
+   - Tune `block_threshold` / `clear_threshold` in `NameMatchConfig`; baseline ops metrics.
+8. **Monitoring & Explainability**
+   - Feature contribution dump; SHAP plots for top-k hits.
+9. **KB update & audit**
+   - Diff new vs existing KB; dry-run; signed JSONL snapshot.
+10. **CI/CD gates**
+    - Lint, smoke `screen()` run, and test dataset; README badge.
 
-### M2 — Enrichment & Peer Groups (3–5 days)
-- Peer group logic (by segment / country / MCC / channel)
-- Country risk lookups
-- Threshold tuning & calibration checklist
+---
 
-### M3 — Graph & Case Views (stretch)
-- Simple network features (degree, transitivity, shortest paths to high-risk nodes)
-- Minimal “investigator view” notebook (context block for a flagged customer)
+## ��� Parked — Transaction Monitoring (Phase 2)
+- Ingest & feature store scaffolding
+- Model baselines (IForest/Autoencoder/Graph rules)
+- Alert explanation pipeline
+- Performance / cost benchmarks
 
-### M4 — Practical next features (data-driven)
-- Inter-arrival time per customer (time since previous transaction)
-- Rolling counts and sums (1/7/30 days) per customer
-- Structuring indicators (counts near thresholds within short windows)
-- Counterparty/merchant aggregations (frequency, avg amount, unique counterparties)
-- Country/channel risk encoding (map to risk scores where fields exist)
-- PEP/sanctions intensity over time (hits in last N days, trailing ratios)
-- Robust normalization alternatives (median/MAD z-scores for long-tailed amounts)
-- Recent trend deltas (current 7d vs historical 90d baseline per customer)
-- Temporal profiles and deviations (hour-of-day/day-of-week baselines vs current)
-- Entity reuse signals if available (device/IP/account reuse across customers)
+---
 
-## Data Contracts
-- **transactions.csv** and **lexisnexis.csv** must have `customer_id` (or map provided).
-- Dates must be ISO format; currencies normalized.
-
-## Deliverables
-- `/data/processed/flagged_transactions.csv`
-- `/reports/phase1_summary.pdf` (optional, from notebooks)
-- Plots: anomaly score distribution; customers by count of flags.
+## ��� Guiding Principles
+- Small, composable modules (sanctions/screening split)
+- SQLite first; FAISS optional
+- LFS for large data; lightweight CI
