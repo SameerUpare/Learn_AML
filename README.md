@@ -227,4 +227,4 @@ print('Entities:', c.execute('SELECT COUNT(*) FROM entities').fetchone()[0]); c.
 
 If both the KB counts and the audit CSV look good → your pipeline is fully operational.
 
-© 2025 AML LexisNexis Starter | Designed for rapid prototyping of sanctions screening workflows
+© 2025 AML | Designed for rapid prototyping of sanctions screening workflows
