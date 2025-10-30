@@ -33,6 +33,7 @@ pip install -r requirements.txt
 
 # Normalize sources (place UK/UN raw files under data/external/sanctions/raw/)
 python -m aml.sanctions.normalize_sanctions --base data/external/sanctions
+# also create a folder under data/external/sanctions/normalized for the normalized file
 
 # Build/refresh SQLite KB with FTS5
 python -m aml.sanctions.load_kb --base data/external/sanctions
